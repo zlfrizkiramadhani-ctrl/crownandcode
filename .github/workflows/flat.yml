@@ -1,7 +1,7 @@
 name: Tarik Data Google Sheets
 on:
   schedule:
-    # Mengatur jadwal otomatis (contoh: berjalan setiap jam)
+    # Mengatur jadwal otomatis (berjalan setiap jam sekali)
     - cron: '0 * * * *'
   workflow_dispatch: # Agar Anda bisa klik tombol "Run" manual kapan saja
 
@@ -11,10 +11,10 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
-
+      
       - name: Tarik Data
         uses: githubnext/flat@v1
         with:
-          # Tempelkan LINK CSV hasil "Publish to web" tadi di sini
-          http_url: 'https://google.com'
-          downloaded_filename: data.csv # Nama file yang akan disimpan di GitHub
+          # LINK CSV Google Sheets Anda dimasukkan di sini:
+          http_url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTGLLUm-N4S2FOVwjXiMVBomkTs-SMbDpO35EkxAOvAjspWzr7LeshlJQZXwA2C4TIwbl-Y3kVPI0FS/pub?output=csv'
+          downloaded_filename: data.csv # Nama file yang akan tersimpan di GitHub Anda
