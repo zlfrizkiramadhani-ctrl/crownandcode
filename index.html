@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Dana Penelitian 2026</title>
+    <!-- Menggunakan framework Tailwind CSS agar tampilan langsung bagus -->
+    <script src="https://jsdelivr.net"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 p-6">
+    <div class="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-md border border-slate-100">
+        <h1 class="text-3xl font-bold text-slate-900 mb-2">🐳 Dashboard Dana Penelitian</h1>
+        <p class="text-slate-500 mb-6">Data tersinkron otomatis dari Google Sheets melalui repositori GitHub</p>
+        
+        <div class="mb-4">
+            <h2 class="text-xl font-semibold mb-2">Tabel Data Mentah (.CSV)</h2>
+            <div class="overflow-x-auto border border-slate-200 rounded-lg">
+                <table id="csv-table" class="min-w-full divide-y divide-slate-200 text-sm">
+                    <!-- Data tabel akan diisi otomatis dari file data.csv oleh JavaScript di bawah -->
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mengambil data dari file data.csv yang ada di repositori GitHub Anda
+        fetch('data.csv')
+            .then(response => response.text())
+            .then(data => {
+                const table = document.getElementById('csv-table');
+                const lines = data.split('\n');
+                
+                lines.forEach((line, index) => {
+                    const columns = line.split(',');
+                    const row = document.createElement('tr');
+                    
+                    // Lewati baris kosong
+                    if(line.trim() === '') return;
+
+                    columns.forEach(col => {
+                        const cell = index === 0 ? document.createElement('th') : document.createElement('td');
+                        cell.textContent = col.replace(/"/g, ''); // Hapus tanda kutip jika ada
+                        cell.className = index === 0 
+                            ? 'px-4 py-3 bg-slate-100 text-left font-semibold text-slate-700 border-b border-slate-200' 
+                            : 'px-4 py-3 border-b border-slate-100 text-slate-600';
+                        row.appendChild(cell);
+                    });
+                    table.appendChild(row);
+                });
+            });
+    </script>
+</body>
+</html>
