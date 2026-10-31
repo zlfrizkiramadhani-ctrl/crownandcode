@@ -1,20 +1,23 @@
 name: Tarik Data Google Sheets
 on:
   schedule:
-    # Mengatur jadwal otomatis (berjalan setiap jam sekali)
     - cron: '0 * * * *'
-  workflow_dispatch: # Agar Anda bisa klik tombol "Run" manual kapan saja
+  workflow_dispatch:
 
 jobs:
   scheduled:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       
-      - name: Tarik Data
-        uses: githubnext/flat@v1
-        with:
-          # LINK CSV Google Sheets Anda dimasukkan di sini:
-          http_url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTGLLUm-N4S2FOVwjXiMVBomkTs-SMbDpO35EkxAOvAjspWzr7LeshlJQZXwA2C4TIwbl-Y3kVPI0FS/pub?output=csv'
-          downloaded_filename: data.csv # Nama file yang akan tersimpan di GitHub Anda
+      - name: Unduh CSV Google Sheets
+        run: |
+          curl -L -o data.csv 'https://google.com'
+          
+      - name: Simpan dan Perbarui di GitHub
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@://github.com"
+          git add data.csv
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update data otomatis dari Google Sheets" && git push)
